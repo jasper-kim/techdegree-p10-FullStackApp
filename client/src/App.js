@@ -1,26 +1,29 @@
-import React, { Component } from 'react';
+import React from 'react';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch
+} from 'react-router-dom';
+
 
 //Imports components
 import Header from './Components/Header';
 import Courses from './Components/Courses';
+import CourseDetail from './Components/CourseDetail';
 
 function App() {
-  const url = 'http://localhost:5000/api/courses';
-  const courses = new Array();
-  
-  fetch(url)
-    .then(res => res.json())
-    .then(data => {
-      data.map(d => {courses.push(d)});
-      console.log(courses);
-    });
-  
-
   return (
-    <div className="App">
-      <Header />
-      <Courses />
-    </div>
+    <Router>
+      <div className="App">
+        <Header />
+        
+        <Switch>
+          <Route exact path='/' component={Courses} />
+          <Route path='/courses/:id' component={CourseDetail} /> 
+        </Switch>
+      </div>
+    </Router>
+    
   );
 }
 

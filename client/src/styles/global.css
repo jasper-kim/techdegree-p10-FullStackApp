@@ -365,7 +365,7 @@ p {
 }
 /* line 116, ../sass/global.sass */
 .course--label {
-  /* font-family: "Cousine"; */
+  font-family: "Cousine";
   font-size: 14px;
   font-weight: 100;
   color: rgba(255, 255, 255, 0.5);
