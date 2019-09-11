@@ -11,6 +11,8 @@ export default class Header extends React.PureComponent {
             <nav>
                 <Link className='signup' to='/signup'>Sign Up</Link>
                 <Link className='signin' to='/signin'>Sign In</Link>
+                {/* <span>Welcome, {authUser.name}!</span>
+                <Link to="/signout">Sign Out</Link> */}
             </nav>
             </div>
         </div>
