@@ -15,6 +15,8 @@ import UserSignUp from './Components/UserSignUp';
 import UserSignOut from './Components/UserSignOut';
 import CreateCourse from './Components/CreateCourse';
 import UpdateCourse from './Components/UpdateCourse';
+import NotFound from './Components/NotFound';
+
 import withContext from './Context';
 
 const UserSignUpWithContext = withContext(UserSignUp);
@@ -33,6 +35,7 @@ function App() {
           <Route path='/signin' component={UserSignIn} /> 
           <Route path='/signup' component={UserSignUpWithContext} />
           <Route path="/signout" component={UserSignOut} />
+          <Route component={NotFound} />
         </Switch>
       </div>
     </Router>

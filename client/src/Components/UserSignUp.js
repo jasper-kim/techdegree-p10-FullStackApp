@@ -22,6 +22,42 @@ export default class UserSignUp extends Component {
         //else
         //set variables from this.state and set them to user variable as object
         //pass user vaiable to createUser method in Data.js
+        event.preventDefault();
+
+        const { context } = this.props;
+
+        const {
+            firstName,
+            lastName,
+            emailAddress,
+            password,
+            confirmPassword,
+            errors,
+        } = this.state;
+
+        const user = {
+            firstName,
+            lastName,
+            emailAddress,
+            password,
+        }
+
+        if(password === confirmPassword) {
+            context.data.createUser(user)
+                .then(errors => {
+                    if(errors.length) {
+                        this.setState({errors});
+                    } else {
+                        console.log(`${firstName} ${lastName} is successfully signed up and authenticated!`);
+                    }
+                })
+                .catch(error => {
+                    console.log(error)
+                    this.props.history.push('/error');
+            });
+        } else {
+            this.setState({errors: [...errors, 'Your password and confirmation password DO NOT match.']});
+        }
     }
 
     change = (event) => {
