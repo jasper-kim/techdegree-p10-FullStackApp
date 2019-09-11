@@ -17,8 +17,8 @@ export default class CreateCourse extends Component {
         this.props.history.push('/');
     }
 
-    submit = (event) => {
-        //call context createCourse method and get user
+    submit = () => {
+        //call Data createCourse method and get user
         //if data object has error key, set it to error state and display
         //ex. data.includes('errors')
         //if not, get id from (res.header.location) and push to 'courses/:id'

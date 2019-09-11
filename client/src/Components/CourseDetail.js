@@ -32,7 +32,8 @@ export default class CourseDetail extends Component {
                     <div className="bounds">
                         <div className="grid-100">
                             <span>
-                                <Link className="button" to="/courses/:id/update">Update Course</Link>
+                                <Link className="button" to={course ? `/courses/${course.id}/update/` : ''}>Update Course</Link>
+                                {/* update delete button url */}
                                 <Link className="button" to="/">Delete Course</Link>
                             </span>
                         <Link className="button button-secondary" to="/">Return to List</Link></div>

@@ -13,6 +13,7 @@ import CourseDetail from './Components/CourseDetail';
 import UserSignIn from './Components/UserSignIn';
 import UserSignUp from './Components/UserSignUp';
 import CreateCourse from './Components/CreateCourse';
+import UpdateCourse from './Components/UpdateCourse';
 
 function App() {
   return (
@@ -22,7 +23,8 @@ function App() {
         
         <Switch>
           <Route exact path='/' component={Courses} />
-          <Route exact path='/courses/create' component={CreateCourse} /> 
+          <Route exact path='/courses/create' component={CreateCourse} />
+          <Route exact path='/courses/:id/update' component={UpdateCourse} />
           <Route path='/courses/:id' component={CourseDetail} /> 
           <Route path='/signin' component={UserSignIn} /> 
           <Route path='/signup' component={UserSignUp} /> 
