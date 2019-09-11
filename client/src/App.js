@@ -15,6 +15,9 @@ import UserSignUp from './Components/UserSignUp';
 import UserSignOut from './Components/UserSignOut';
 import CreateCourse from './Components/CreateCourse';
 import UpdateCourse from './Components/UpdateCourse';
+import withContext from './Context';
+
+const UserSignUpWithContext = withContext(UserSignUp);
 
 function App() {
   return (
@@ -28,7 +31,7 @@ function App() {
           <Route exact path='/courses/:id/update' component={UpdateCourse} />
           <Route path='/courses/:id' component={CourseDetail} /> 
           <Route path='/signin' component={UserSignIn} /> 
-          <Route path='/signup' component={UserSignUp} />
+          <Route path='/signup' component={UserSignUpWithContext} />
           <Route path="/signout" component={UserSignOut} />
         </Switch>
       </div>
