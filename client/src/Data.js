@@ -2,7 +2,7 @@
 //getUser
 //createUser
 //getCourses
-//getCourse
+//getCourse(url)
 //createCourse
 //updateCourse
 //deleteCourse
