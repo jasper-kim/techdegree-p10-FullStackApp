@@ -11,6 +11,7 @@ import Header from './Components/Header';
 import Courses from './Components/Courses';
 import CourseDetail from './Components/CourseDetail';
 import UserSignIn from './Components/UserSignIn';
+import UserSignUp from './Components/UserSignUp';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route exact path='/' component={Courses} />
           <Route path='/courses/:id' component={CourseDetail} /> 
           <Route path='/signin' component={UserSignIn} /> 
+          <Route path='/signup' component={UserSignUp} /> 
         </Switch>
       </div>
     </Router>

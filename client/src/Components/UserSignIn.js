@@ -8,9 +8,15 @@ export default class UserSignIn extends Component {
         errors: [],
     }
 
-    handleClick = (event) => {
+    cancel = (event) => {
         event.preventDefault(); 
         this.props.history.push('/');
+    }
+
+    submit = (event) => {
+        //call context signin method and get user
+        //if user is null set error state with unsuceesfull message
+        //if user is exist send a user to this.props.location.state.from or '/'
     }
 
     change = (event) => {
@@ -21,7 +27,7 @@ export default class UserSignIn extends Component {
             [name]: value
           };
         });
-      }
+    }
 
     render() {
         const {
@@ -35,7 +41,7 @@ export default class UserSignIn extends Component {
                 <div className="grid-33 centered signin">
                 <h1>Sign In</h1>
                 <div>
-                    <form>
+                    <form onSubmit={this.submit}>
                         <div>
                             <input 
                                 id="emailAddress" 
@@ -57,7 +63,7 @@ export default class UserSignIn extends Component {
                         </div>
                         <div className="grid-100 pad-bottom">
                             <button className="button" type="submit">Sign In</button>
-                            <button className="button button-secondary" onClick={this.handleClick}>Cancel</button>
+                            <button className="button button-secondary" onClick={this.cancel}>Cancel</button>
                         </div>
                     </form>
                 </div>
