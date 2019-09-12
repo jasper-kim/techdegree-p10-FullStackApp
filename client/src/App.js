@@ -20,6 +20,7 @@ import NotFound from './Components/NotFound';
 import withContext from './Context';
 
 const UserSignUpWithContext = withContext(UserSignUp);
+const UserSignInWithContext = withContext(UserSignIn);
 
 function App() {
   return (
@@ -32,7 +33,7 @@ function App() {
           <Route exact path='/courses/create' component={CreateCourse} />
           <Route exact path='/courses/:id/update' component={UpdateCourse} />
           <Route path='/courses/:id' component={CourseDetail} /> 
-          <Route path='/signin' component={UserSignIn} /> 
+          <Route path='/signin' component={UserSignInWithContext} /> 
           <Route path='/signup' component={UserSignUpWithContext} />
           <Route path="/signout" component={UserSignOut} />
           <Route component={NotFound} />

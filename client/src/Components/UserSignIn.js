@@ -17,6 +17,24 @@ export default class UserSignIn extends Component {
         //call context signin method and get user
         //if user is null set error state with unsuceesfull message
         //if user is exist send a user to this.props.location.state.from or '/'
+        event.preventDefault();
+        const { context } = this.props;
+        const { from } = this.props.location.state || { from: { pathname: '/' } };
+        const { emailAddress, password } = this.state;
+        context.actions.signIn(emailAddress, password)
+            .then(user => {
+                if(user === null) {
+                    this.setState({
+                        errors: ["Sign-in was unsuccessfull!"],
+                    });
+                } else {
+                    this.props.history.push(from);
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                this.props.history.push('/error');
+            });;
     }
 
     change = (event) => {

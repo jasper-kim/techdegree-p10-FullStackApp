@@ -1,5 +1,5 @@
 export default class Data {
-    api = (url, method, body = null) => {
+    api = (url, method = 'GET', body = null,requiresAuth = false, credentials = null) => {
         const options = {
             method,
             headers: {
@@ -11,11 +11,25 @@ export default class Data {
             options.body = JSON.stringify(body);
         }
 
+        if (requiresAuth) {    
+            const encodedCredentials = btoa(`${credentials.emailAddress}:${credentials.password}`);
+            options.headers['Authorization'] = `Basic ${encodedCredentials}`;
+        }
+
         return fetch(url, options);
     }
 
-    async getUser() {
+    async getUser(emailAddress, password) {
+        const url = 'http://localhost:5000/api/users';
+        const response = await this.api(url, 'GET', null, true, { emailAddress, password });
 
+        if(response.status === 200) {
+            return response.json().then(data => data);
+        } else if(response.status === 400) {
+            return null;
+        } else {
+            throw new Error();
+        }
     }
 
     async createUser(user) {

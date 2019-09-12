@@ -9,9 +9,18 @@ export class Provider extends Component {
         this.data = new Data();   
     }
     
+    state = {
+      authenticatedUser: null,
+      userPassword: null,
+    };
+
     render() {
         const value = {
             data: this.data,
+            actions: {
+              signIn: this.signIn,
+              signOut: this.signOut,
+            }
         }
 
         return (
@@ -19,6 +28,24 @@ export class Provider extends Component {
                 {this.props.children}
             </Context.Provider>
         );
+    }
+
+    signIn = async (emailAddress, password) => {
+      const user = await this.data.getUser(emailAddress, password);
+      if (user !== null) {
+        this.setState({
+          authenticatedUser: user,
+          userPassword: password,
+        });
+      }
+      return user;
+    }
+
+    signOut = async () => {
+      this.setState({
+         authenticatedUser: null,
+         userPassword: null,
+        });
     }
 }
 
