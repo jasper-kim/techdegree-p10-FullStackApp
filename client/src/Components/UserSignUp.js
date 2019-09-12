@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
+import ErrorDisplay from './ErrorDisplay';
+
 export default class UserSignUp extends Component {
     state = {
         firstName: '',
@@ -48,7 +50,20 @@ export default class UserSignUp extends Component {
                     if(errors.length) {
                         this.setState({errors});
                     } else {
-                        console.log(`${firstName} ${lastName} is successfully signed up and authenticated!`);
+                        context.actions.signIn(emailAddress, password)
+                            .then(user => {
+                                if(user === null) {
+                                    this.setState({
+                                        errors: ["Sign-in was unsuccessfull!"],
+                                    });
+                                } else {
+                                    this.props.history.push('/');
+                                }
+                            })
+                            .catch(err => {
+                                console.log(err);
+                                this.props.history.push('/error');
+                            });;
                     }
                 })
                 .catch(error => {
@@ -70,8 +85,6 @@ export default class UserSignUp extends Component {
         });
     }
 
-
-
     render () {
         const {
             firstName,
@@ -86,6 +99,7 @@ export default class UserSignUp extends Component {
                 <div className="grid-33 centered signin">
                 <h1>Sign Up</h1>
                 <div>
+                    <ErrorDisplay errors={errors}/>
                     <form onSubmit={this.submit}>
                         <div>
                             <input 

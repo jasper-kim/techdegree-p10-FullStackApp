@@ -21,12 +21,14 @@ import withContext from './Context';
 
 const UserSignUpWithContext = withContext(UserSignUp);
 const UserSignInWithContext = withContext(UserSignIn);
+const UserSignOutWithContext = withContext(UserSignOut);
+const HeaderWithContext = withContext(Header);
 
 function App() {
   return (
     <Router>
       <div className="App">
-        <Header />
+        <HeaderWithContext />
         
         <Switch>
           <Route exact path='/' component={Courses} />
@@ -35,7 +37,7 @@ function App() {
           <Route path='/courses/:id' component={CourseDetail} /> 
           <Route path='/signin' component={UserSignInWithContext} /> 
           <Route path='/signup' component={UserSignUpWithContext} />
-          <Route path="/signout" component={UserSignOut} />
+          <Route path="/signout" component={UserSignOutWithContext} />
           <Route component={NotFound} />
         </Switch>
       </div>

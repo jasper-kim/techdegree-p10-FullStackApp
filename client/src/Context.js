@@ -15,19 +15,21 @@ export class Provider extends Component {
     };
 
     render() {
-        const value = {
-            data: this.data,
-            actions: {
-              signIn: this.signIn,
-              signOut: this.signOut,
-            }
+      const { authenticatedUser } = this.state;
+      const value = {
+        authenticatedUser,
+        data: this.data,
+        actions: {
+          signIn: this.signIn,
+          signOut: this.signOut,
         }
+      }
 
-        return (
-            <Context.Provider value={value}>
-                {this.props.children}
-            </Context.Provider>
-        );
+      return (
+          <Context.Provider value={value}>
+              {this.props.children}
+          </Context.Provider>
+      );
     }
 
     signIn = async (emailAddress, password) => {
