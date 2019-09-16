@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 import ErrorDisplay from './ErrorDisplay';
+import ReactMarkdown from 'react-markdown';
 
 export default class CourseDetail extends Component {
     state = {
@@ -25,7 +26,7 @@ export default class CourseDetail extends Component {
         const { course, errors } = this.state;
         const { authenticatedUser, actions } = this.props.context;
         let authButton = '';
-        
+
         if(course && authenticatedUser) {
             if(course.User.id === authenticatedUser.id) {
                 authButton = <React.Fragment>
@@ -69,7 +70,7 @@ export default class CourseDetail extends Component {
                             <p>By {course ? (`${course.User.firstName} ${course.User.lastName}`) : ''}</p>
                         </div>
                         <div className="course--description">
-                            <p>{course ? course.description : ''}</p>
+                            {course ? <ReactMarkdown source={course.description} /> : ''}
                         </div>
                     </div>
                     <div className="grid-25 grid-right">
@@ -81,7 +82,7 @@ export default class CourseDetail extends Component {
                                 </li>
                                 <li className="course--stats--list--item">
                                     <h4>Materials Needed</h4>
-                                    <p>{course ? course.materialsNeeded || 'N/A' : ''}</p>
+                                    {course ? <ReactMarkdown source={course.materialsNeeded || "N/A"} /> : ''}
                                 </li>
                             </ul>
                         </div>
