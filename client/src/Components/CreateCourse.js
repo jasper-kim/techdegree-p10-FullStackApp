@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import ErrorDisplay from './ErrorDisplay';
 
 export default class CreateCourse extends Component {
 
@@ -7,8 +8,6 @@ export default class CreateCourse extends Component {
     state = {
         title: '',
         description: '',
-        estimatedTime: '',
-        materialsNeeded: '',
         errors: [], // if errors come from server, it will set to this state
     }
 
@@ -17,11 +16,41 @@ export default class CreateCourse extends Component {
         this.props.history.push('/');
     }
 
-    submit = () => {
-        //call Data createCourse method and get user
-        //if data object has error key, set it to error state and display
-        //ex. data.includes('errors')
-        //if not, get id from (res.header.location) and push to 'courses/:id'
+    submit = (event) => {
+        event.preventDefault();
+        
+        const { context } = this.props;
+
+        const {
+            title,
+            description,
+            estimatedTime,
+            materialsNeeded,
+            errors,
+        } = this.state;
+
+        const userId = context.authenticatedUser.id;
+        
+        const body = {
+            title,
+            description,
+            estimatedTime,
+            materialsNeeded,
+            userId,
+        }
+        
+        context.actions.createCourse(body)
+            .then(data => {
+                if(data.errors) {
+                    this.setState({
+                        errors: data.errors,
+                    });
+                } else {
+                    //if creating a course is successfull, data returns the id of the new course
+                    this.props.history.push(`/courses/${data}`);
+                }
+            })
+
     }
 
     change = (event) => {
@@ -46,15 +75,7 @@ export default class CreateCourse extends Component {
             <div className="bounds course--detail">
                 <h1>Create Course</h1>
                 <div>
-                    <div>
-                        <h2 className="validation--errors--label">Validation errors</h2>
-                        <div className="validation-errors">
-                        <ul>
-                            <li>Please provide a value for "Title"</li>
-                            <li>Please provide a value for "Description"</li>
-                        </ul>
-                        </div>
-                    </div>
+                    <ErrorDisplay errors={errors}/>
                     <form onSubmit={this.submit}>
                         <div className="grid-66">
                             <div className="course--header">

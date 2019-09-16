@@ -22,6 +22,7 @@ export class Provider extends Component {
         actions: {
           signIn: this.signIn,
           signOut: this.signOut,
+          createCourse: this.createCourse,
         }
       }
 
@@ -49,6 +50,22 @@ export class Provider extends Component {
          userPassword: null,
         });
     }
+
+    createCourse = async (body) => {
+      const url = 'http://localhost:5000/api/courses';
+      const { emailAddress } = this.state.authenticatedUser;
+      const password = this.state.userPassword;
+      const response = await this.data.api(url, 'POST', body, true, {emailAddress, password});
+      if (response.status === 201) {
+        const location = response.headers.get('Location');
+        const id = location.replace('/api/courses/', '');
+        return id;
+      } else if (response.status ===400) {
+          return response.json().then(data => data);
+      } else {
+          throw new Error();
+      }
+  }
 }
 
 export const Consumer = Context.Consumer;

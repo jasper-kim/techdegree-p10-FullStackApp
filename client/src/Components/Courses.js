@@ -14,14 +14,16 @@ export default class Courses extends Component {
 
     // Fetch an array of course objects and
     // set it to the courses state.
-    getCourses = () => {
-        fetch('http://localhost:5000/api/courses')
-            .then(res => res.json())
-            .then(data => {
-                data.map(course => this.setState({
-                    courses: [...this.state.courses, course]
-                  }));
-            });
+    getCourses = async () => {
+        // fetch('http://localhost:5000/api/courses')
+        //     .then(res => res.json())
+        //     .then(data => {
+        //         data.map(course => this.setState({
+        //             courses: [...this.state.courses, course]
+        //           }));
+        //     });
+        const courses = await this.props.context.data.getCourses();
+        this.setState({courses});
     }
 
     render() {

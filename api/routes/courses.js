@@ -140,7 +140,7 @@ router.post('/', authenticateUser, [
         // Use the Array `map()` method to get a list of error messages.
         const errorMessages = errors.array().map(error => error.msg);
         // Send validation error(s) with 400 status code   
-        return res.status(400).json({ error: errorMessages});
+        return res.status(400).json({ errors: errorMessages});
     }
 
     // Create a new course
@@ -148,7 +148,7 @@ router.post('/', authenticateUser, [
         try {
             const course = await Course.create(req.body);
             // Set the status to 201 Created and end the response.
-    return res.location(`/api/courses/${course.id}`).status(201).end();
+            return res.location(`/api/courses/${course.id}`).status(201).end();
         } catch(err) {
             console.error('Oh noooo!! Error: ', err);
         } 

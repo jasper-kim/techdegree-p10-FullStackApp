@@ -19,11 +19,6 @@ export default class UserSignUp extends Component {
     }
 
     submit = (event) => {
-        //if password is NOT equal to confirmPassword,
-        //set error message
-        //else
-        //set variables from this.state and set them to user variable as object
-        //pass user vaiable to createUser method in Data.js
         event.preventDefault();
 
         const { context } = this.props;
@@ -54,7 +49,7 @@ export default class UserSignUp extends Component {
                             .then(user => {
                                 if(user === null) {
                                     this.setState({
-                                        errors: ["Sign-in was unsuccessfull!"],
+                                        errors: [...errors, "Sign-in was unsuccessfull!"],
                                     });
                                 } else {
                                     this.props.history.push('/');

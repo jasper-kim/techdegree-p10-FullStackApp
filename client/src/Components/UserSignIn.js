@@ -14,9 +14,6 @@ export default class UserSignIn extends Component {
     }
 
     submit = (event) => {
-        //call context signin method and get user
-        //if user is null set error state with unsuceesfull message
-        //if user is exist send a user to this.props.location.state.from or '/'
         event.preventDefault();
         const { context } = this.props;
         const { from } = this.props.location.state || { from: { pathname: '/' } };
