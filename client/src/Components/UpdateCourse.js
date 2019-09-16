@@ -10,15 +10,52 @@ export default class UpdateCourse extends Component {
         errors: [],
     }
 
+    componentDidMount() {
+        this.getCourse();
+    }
+
     cancel = (event) => {
         event.preventDefault(); 
         this.props.history.push(`/courses/${this.state.id}`);
     }
 
-    submit = () => {
+    submit = (event) => {
         //call Data updateCourse method with course info object
         //if not success, set errors state and display
         //if success, redirect to detail page
+        event.preventDefault();
+        
+        const { context } = this.props;
+
+        const {
+            title,
+            description,
+            estimatedTime,
+            materialsNeeded,
+            errors,
+        } = this.state;
+
+        const userId = context.authenticatedUser.id;
+
+        const body = {
+            title,
+            description,
+            estimatedTime,
+            materialsNeeded,
+            userId,
+        };
+        
+        context.actions.updateCourse(body, this.props.match.params.id)
+            .then(data => {
+                if(data.errors) {
+                    this.setState({
+                        errors: data.errors,
+                    });
+                } else {
+                    //if creating a course is successfull, data returns the id of the new course
+                    this.props.history.push(`/courses/${data}`);
+                }
+            });
     } 
 
     change = (event) => {
@@ -30,10 +67,6 @@ export default class UpdateCourse extends Component {
             [name]: value
           };
         });
-    }
-
-    componentDidMount() {
-        this.getCourse();
     }
 
     // Fetch an array of course objects and

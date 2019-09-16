@@ -30,14 +30,14 @@ export default class CreateCourse extends Component {
         } = this.state;
 
         const userId = context.authenticatedUser.id;
-        
+
         const body = {
             title,
             description,
             estimatedTime,
             materialsNeeded,
             userId,
-        }
+        };
         
         context.actions.createCourse(body)
             .then(data => {
@@ -49,7 +49,7 @@ export default class CreateCourse extends Component {
                     //if creating a course is successfull, data returns the id of the new course
                     this.props.history.push(`/courses/${data}`);
                 }
-            })
+            });
 
     }
 
