@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import ErrorDisplay from './ErrorDisplay';
 
 export default class UserSignIn extends Component {
     state = {
@@ -18,20 +19,31 @@ export default class UserSignIn extends Component {
         const { context } = this.props;
         const { from } = this.props.location.state || { from: { pathname: '/' } };
         const { emailAddress, password } = this.state;
-        context.actions.signIn(emailAddress, password)
-            .then(user => {
-                if(user === null) {
-                    this.setState({
-                        errors: ["Sign-in was unsuccessfull!"],
-                    });
-                } else {
-                    this.props.history.push(from);
-                }
-            })
-            .catch(err => {
-                console.log(err);
-                this.props.history.push('/error');
-            });;
+
+        if(!emailAddress) {
+            this.setState({
+                errors: ['Please provide "email address".'],
+            });
+        } else if(!password) {
+            this.setState({
+                errors: ['Please provide "password".'],
+            });
+        } else {
+            context.actions.signIn(emailAddress, password)
+                .then(user => {
+                    if(user === null) {
+                        this.setState({
+                            errors: ["Sign-in was unsuccessfull!", "Please check your email or password."],
+                        });
+                    } else {
+                        this.props.history.push(from);
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                    this.props.history.push('/error');
+                });
+        }
     }
 
     change = (event) => {
@@ -56,6 +68,7 @@ export default class UserSignIn extends Component {
                 <div className="grid-33 centered signin">
                 <h1>Sign In</h1>
                 <div>
+                    <ErrorDisplay errors={errors}/>
                     <form onSubmit={this.submit}>
                         <div>
                             <input 

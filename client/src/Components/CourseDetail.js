@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
+import ErrorDisplay from './ErrorDisplay';
 
 export default class CourseDetail extends Component {
     state = {
         course: null,
+        errors: [],
     }
 
     // Call getCourses method to fetch a list of courses
@@ -20,16 +22,28 @@ export default class CourseDetail extends Component {
     }
 
     render() {
-        const { course } = this.state;
-        const { authenticatedUser } = this.props.context;
+        const { course, errors } = this.state;
+        const { authenticatedUser, actions } = this.props.context;
         let authButton = '';
         
         if(course && authenticatedUser) {
             if(course.User.id === authenticatedUser.id) {
                 authButton = <React.Fragment>
                                 <Link className="button" to={course ? `/courses/${course.id}/update/` : ''}>Update Course</Link>
-                                <Link className="button" to="/">Delete Course</Link>
-                            </React.Fragment>;
+                                <button className="button" onClick={()=>{
+                                    actions.deleteCourse(course.id)
+                                        .then(data => {
+                                            if(data.errors) {
+                                                this.setState({
+                                                    errors: data.errors,
+                                                });
+                                            } else {
+                                                //if Deleting a course is successfull, data returns '/'
+                                                this.props.history.push(data);
+                                            }
+                                        });
+                                }}>Delete Course</button>
+                            </React.Fragment>
             }
         }
 
@@ -48,6 +62,7 @@ export default class CourseDetail extends Component {
 
                 <div className="bounds course--detail">
                     <div className="grid-66">
+                        <ErrorDisplay errors={errors}/>
                         <div className="course--header">
                             <h4 className="course--label">Course</h4>
                             <h3 className="course--title">{course ? course.title : ''}</h3>

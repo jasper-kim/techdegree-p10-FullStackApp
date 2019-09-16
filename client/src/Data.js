@@ -26,7 +26,7 @@ export default class Data {
 
         if(response.status === 200) {
             return response.json().then(data => data);
-        } else if(response.status === 400) {
+        } else if(response.status >= 400) {
             return null;
         } else {
             throw new Error();
@@ -82,10 +82,6 @@ export default class Data {
     //         throw new Error();
     //     }
     // }
-    
-    async updateCourse() {
-
-    }
 
     async deleteCourse() {
 

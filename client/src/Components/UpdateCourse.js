@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ErrorDisplay from './ErrorDisplay';
 
 export default class UpdateCourse extends Component {
     state = {
@@ -20,9 +21,6 @@ export default class UpdateCourse extends Component {
     }
 
     submit = (event) => {
-        //call Data updateCourse method with course info object
-        //if not success, set errors state and display
-        //if success, redirect to detail page
         event.preventDefault();
         
         const { context } = this.props;
@@ -96,6 +94,7 @@ export default class UpdateCourse extends Component {
             <div className="bounds course--detail">
                 <h1>Update Course</h1>
                 <div>
+                <ErrorDisplay errors={errors}/>
                 <form onSubmit={this.submit}>
                     <div className="grid-66">
                         <div className="course--header">

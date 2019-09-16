@@ -54,7 +54,6 @@ export default class CreateCourse extends Component {
     }
 
     change = (event) => {
-        console.log(event);
         const {target: { name, value }} = event;
     
         this.setState(() => {

@@ -49,7 +49,7 @@ export default class UserSignUp extends Component {
                             .then(user => {
                                 if(user === null) {
                                     this.setState({
-                                        errors: [...errors, "Sign-in was unsuccessfull!"],
+                                        errors: ["Sign-in was unsuccessfull!"],
                                     });
                                 } else {
                                     this.props.history.push('/');
@@ -66,7 +66,7 @@ export default class UserSignUp extends Component {
                     this.props.history.push('/error');
             });
         } else {
-            this.setState({errors: [...errors, 'Your password and confirmation password DO NOT match.']});
+            this.setState({errors: ['Your password and confirmation password DO NOT match.']});
         }
     }
 

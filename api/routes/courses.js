@@ -173,7 +173,7 @@ router.put('/:id', authenticateUser, [
         // Use the Array `map()` method to get a list of error messages.
         const errorMessages = errors.array().map(error => error.msg);
         // Send validation error(s) with 400 status code    
-        return res.status(400).json({ error: errorMessages});
+        return res.status(400).json({ errors: errorMessages});
     }
 
     // Update a new course

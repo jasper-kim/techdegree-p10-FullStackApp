@@ -24,6 +24,7 @@ export class Provider extends Component {
         signOut: this.signOut,
         createCourse: this.createCourse,
         updateCourse: this.updateCourse,
+        deleteCourse: this.deleteCourse,
       }
     }
 
@@ -75,6 +76,20 @@ export class Provider extends Component {
     const response = await this.data.api(url, 'PUT', body, true, {emailAddress, password});
     if (response.status === 204) {
       return id;
+    } else if (response.status >= 400) {
+        return response.json().then(data => data);
+    } else {
+        throw new Error();
+    }
+  }
+
+  deleteCourse = async (id) => {
+    const url = `http://localhost:5000/api/courses/${id}`;
+    const { emailAddress } = this.state.authenticatedUser;
+    const password = this.state.userPassword;
+    const response = await this.data.api(url, 'DELETE', null, true, {emailAddress, password});
+    if (response.status === 204) {
+      return '/';
     } else if (response.status >= 400) {
         return response.json().then(data => data);
     } else {
