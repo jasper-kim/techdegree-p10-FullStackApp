@@ -11,58 +11,6 @@ export default class CreateCourse extends Component {
         errors: [], // if errors come from server, it will set to this state
     }
 
-    cancel = (event) => {
-        event.preventDefault(); 
-        this.props.history.push('/');
-    }
-
-    submit = (event) => {
-        event.preventDefault();
-        
-        const { context } = this.props;
-
-        const {
-            title,
-            description,
-            estimatedTime,
-            materialsNeeded,
-            errors,
-        } = this.state;
-
-        const userId = context.authenticatedUser.id;
-
-        const body = {
-            title,
-            description,
-            estimatedTime,
-            materialsNeeded,
-            userId,
-        };
-        
-        context.actions.createCourse(body)
-            .then(data => {
-                if(data.errors) {
-                    this.setState({
-                        errors: data.errors,
-                    });
-                } else {
-                    //if creating a course is successfull, data returns the id of the new course
-                    this.props.history.push(`/courses/${data}`);
-                }
-            });
-
-    }
-
-    change = (event) => {
-        const {target: { name, value }} = event;
-    
-        this.setState(() => {
-          return {
-            [name]: value
-          };
-        });
-    }
-
     render () {
         const {
             title,
@@ -142,5 +90,76 @@ export default class CreateCourse extends Component {
                 </div>
             </div>
         );
+    }
+
+    cancel = (event) => {
+        event.preventDefault(); 
+        this.props.history.push('/');
+    }
+
+    submit = (event) => {
+        event.preventDefault();
+        
+        const { context } = this.props;
+
+        const {
+            title,
+            description,
+            estimatedTime,
+            materialsNeeded,
+        } = this.state;
+
+        const userId = context.authenticatedUser.id;
+
+        const body = {
+            title,
+            description,
+            estimatedTime,
+            materialsNeeded,
+            userId,
+        };
+        
+        this.createCourse(body)
+            .then(data => {
+                if(data.errors) {
+                    this.setState({
+                        errors: data.errors,
+                    });
+                } else {
+                    //if creating a course is successfull, data returns the id of the new course
+                    this.props.history.push(`/courses/${data}`);
+                }
+            });
+
+    }
+
+    createCourse = async (body) => {
+        const url = 'http://localhost:5000/api/courses';
+        const { context } = this.props;
+        const { emailAddress } = context.authenticatedUser;
+        const password = context.actions.getPassword();
+        const response = await context.data.api(url, 'POST', body, true, {emailAddress, password});
+
+        if (response.status === 201) {
+          const location = response.headers.get('Location');
+          const id = location.replace('/api/courses/', '');
+          return id;
+        } else if (response.status === 400) {
+            return response.json().then(data => data);
+        } else if (response.status === 500) {
+          this.props.history.push(`/error`);
+        } else {
+            throw new Error();
+        }
+      }
+
+    change = (event) => {
+        const {target: { name, value }} = event;
+    
+        this.setState(() => {
+          return {
+            [name]: value
+          };
+        });
     }
 }

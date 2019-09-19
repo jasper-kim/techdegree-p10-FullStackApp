@@ -11,8 +11,25 @@ export default class UpdateCourse extends Component {
         errors: [],
     }
 
+    // Call getCourses method to fetch a list of courses
+    // when the component is mounted.
     componentDidMount() {
-        this.getCourse();
+        this.getCourseDetail();
+    }
+
+    // Fetch an array of course objects and
+    // set it to the courses state.
+    getCourseDetail = async (id = this.props.match.params.id) => {
+        const url = 'http://localhost:5000/api/courses/';
+        const response = await this.props.context.data.api(url + id);
+
+        if(response.status === 200) {
+            response.json().then(data => this.setState({ ...data }));
+        } else if (response.status === 500) {
+            this.props.history.push(`/error`);
+        } else {
+            throw new Error();
+        }
     }
 
     cancel = (event) => {
@@ -30,7 +47,6 @@ export default class UpdateCourse extends Component {
             description,
             estimatedTime,
             materialsNeeded,
-            errors,
         } = this.state;
 
         const userId = context.authenticatedUser.id;
@@ -43,18 +59,39 @@ export default class UpdateCourse extends Component {
             userId,
         };
         
-        context.actions.updateCourse(body, this.props.match.params.id)
+        this.updateCourse(body, this.props.match.params.id)
             .then(data => {
                 if(data.errors) {
                     this.setState({
                         errors: data.errors,
                     });
                 } else {
-                    //if creating a course is successfull, data returns the id of the new course
-                    this.props.history.push(`/courses/${data}`);
+                    this.props.history.push(data);
                 }
             });
-    } 
+    }
+
+    updateCourse = async (body, id) => {
+        const url = `http://localhost:5000/api/courses/${id}`;
+
+        const { context } = this.props;
+        const { emailAddress } = context.authenticatedUser;
+        const password = context.actions.getPassword();
+        const response = await context.data.api(url, 'PUT', body, true, {emailAddress, password});
+
+        if (response.status === 204) {
+            return `/courses/${id}`;
+        } else if (response.status === 403) {
+            return '/forbidden'
+        }   else if (response.status === 400) {
+            return response.json().then(data => data);
+        } else if (response.status >= 500) {
+            return `/error`;
+        }
+        else {
+            throw new Error();
+        }
+      }
 
     change = (event) => {
         console.log(event);
@@ -66,15 +103,6 @@ export default class UpdateCourse extends Component {
           };
         });
     }
-
-    // Fetch an array of course objects and
-    // set it to the courses state.
-    getCourse = () => {
-        fetch('http://localhost:5000/api/courses/' + this.getId())
-            .then(res => res.json())
-            .then(course => this.setState({ ...course }));
-    }
-
 
     getId = () => {
         return this.props.match.params.id;

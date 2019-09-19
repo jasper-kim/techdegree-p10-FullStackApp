@@ -81,7 +81,7 @@ router.get('/', (req, res) => {
                         },
                 ]
             });
-            res.json(courses).status(200).end();
+            res.status(200).json(courses).end();
         } catch(err) {
             console.error('Cannot get a list of courses: ', err);
         }

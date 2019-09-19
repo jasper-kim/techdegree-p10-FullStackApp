@@ -12,18 +12,17 @@ export default class Courses extends Component {
         this.getCourses();
     }
 
-    // Fetch an array of course objects and
-    // set it to the courses state.
     getCourses = async () => {
-        // fetch('http://localhost:5000/api/courses')
-        //     .then(res => res.json())
-        //     .then(data => {
-        //         data.map(course => this.setState({
-        //             courses: [...this.state.courses, course]
-        //           }));
-        //     });
-        const courses = await this.props.context.data.getCourses();
-        this.setState({courses});
+        const url = 'http://localhost:5000/api/courses/';
+        const response = await this.props.context.data.api(url);
+
+        if(response.status === 200) {
+            response.json().then(data => this.setState({courses: data}));
+        } else if (response.status === 500) {
+            this.props.history.push(`/error`);
+        } else {
+            throw new Error();
+        }
     }
 
     render() {

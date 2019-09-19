@@ -28,6 +28,8 @@ export default class Data {
             return response.json().then(data => data);
         } else if(response.status >= 400) {
             return null;
+        } else if (response.status >= 500) {
+            this.props.history.push(`/error`);
         } else {
             throw new Error();
         }
@@ -40,50 +42,10 @@ export default class Data {
             return [];
         } else if (response.status ===400) {
             return response.json().then(data => data.errors);
+        } else if (response.status >= 500) {
+            this.props.history.push(`/error`);
         } else {
             throw new Error();
         }
-    }
-
-    async getCourses() {
-        const url = 'http://localhost:5000/api/courses/';
-        const response = await this.api(url);
-
-        if(response.status === 200) {
-            return response.json().then(data => data);
-        } else if(response.status === 400) {
-            return null;
-        } else {
-            throw new Error();
-        }
-    }
-    
-    async getCourseDetail(id) {
-        const url = 'http://localhost:5000/api/courses/';
-        const response = await this.api(url + id);
-
-        if(response.status === 200) {
-            return response.json().then(data => data);
-        } else if(response.status === 400) {
-            return null;
-        } else {
-            throw new Error();
-        }
-    }
-    
-    // async createCourse(body) {
-    //     const url = 'http://localhost:5000/api/courses';
-    //     const response = await this.api(url, 'POST', body);
-    //     if (response.status === 201) {
-    //         return response.headers;
-    //     } else if (response.status ===400) {
-    //         return response.json().then(data => data);
-    //     } else {
-    //         throw new Error();
-    //     }
-    // }
-
-    async deleteCourse() {
-
     }
 }

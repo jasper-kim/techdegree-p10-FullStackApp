@@ -15,16 +15,43 @@ export default class CourseDetail extends Component {
         this.getCourseDetail();
     }
 
-    // Fetch an array of course objects and
-    // set it to the courses state.
-    getCourseDetail = async () => {
-        const course = await this.props.context.data.getCourseDetail(this.props.match.params.id);
-        this.setState({course});
+    getCourseDetail = async (id = this.props.match.params.id) => {
+        const url = 'http://localhost:5000/api/courses/';
+        const response = await this.props.context.data.api(url + id);
+
+        if(response.status === 200) {
+            response.json().then(data => this.setState({course: data}));
+        } else if (response.status === 500) {
+            this.props.history.push(`/error`);
+        } else {
+            throw new Error();
+        }
     }
+
+    deleteCourse = async (id = this.props.match.params.id) => {
+        const url = `http://localhost:5000/api/courses/${id}`;
+
+        const { context } = this.props;
+        const { emailAddress } = context.authenticatedUser;
+        const password = context.actions.getPassword();
+        const response = await context.data.api(url, 'DELETE', null, true, {emailAddress, password});
+
+        if (response.status === 204) {
+          return '/';
+        } else if (response.status === 403) {
+          return '/forbidden'
+        } else if (response.status === 400) {
+            return response.json().then(data => data);
+        } else if (response.status >= 500) {
+          this.props.history.push(`/error`);
+        } else {
+            throw new Error();
+        }
+      }
 
     render() {
         const { course, errors } = this.state;
-        const { authenticatedUser, actions } = this.props.context;
+        const { authenticatedUser } = this.props.context;
         let authButton = '';
 
         if(course && authenticatedUser) {
@@ -32,14 +59,14 @@ export default class CourseDetail extends Component {
                 authButton = <React.Fragment>
                                 <Link className="button" to={course ? `/courses/${course.id}/update/` : ''}>Update Course</Link>
                                 <button className="button" onClick={()=>{
-                                    actions.deleteCourse(course.id)
+                                    this.deleteCourse()
                                         .then(data => {
                                             if(data.errors) {
                                                 this.setState({
                                                     errors: data.errors,
                                                 });
                                             } else {
-                                                //if Deleting a course is successfull, data returns '/'
+                                                //if server returns 200 status, data returns '/'
                                                 this.props.history.push(data);
                                             }
                                         });

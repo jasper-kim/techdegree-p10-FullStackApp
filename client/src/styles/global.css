@@ -751,3 +751,9 @@ input:focus {
 .course--description textarea {
   margin-bottom: 20px;
 }
+
+.error--title {
+  font-size: 48px;
+  margin-bottom: 15px;
+  color: #332a40;
+}

@@ -2,7 +2,7 @@ import React from 'react';
 
 export default () => (
   <div className="bounds">
-    <h1>Not Found</h1>
-    <p>Sorry! We couldn't find the page you're looking for.</p>
+    <h2 className="error--title">404 Error - Page Not Found</h2>
+    <p>The page you were looking for could not be found, but don't leave and try a new search!!</p>
   </div>
 );
