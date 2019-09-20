@@ -9,53 +9,6 @@ export default class UserSignIn extends Component {
         errors: [],
     }
 
-    cancel = (event) => {
-        event.preventDefault(); 
-        this.props.history.push('/');
-    }
-
-    submit = (event) => {
-        event.preventDefault();
-        const { context } = this.props;
-        const { from } = this.props.location.state || { from: { pathname: '/' } };
-        const { emailAddress, password } = this.state;
-
-        if(!emailAddress) {
-            this.setState({
-                errors: ['Please provide "email address".'],
-            });
-        } else if(!password) {
-            this.setState({
-                errors: ['Please provide "password".'],
-            });
-        } else {
-            context.actions.signIn(emailAddress, password)
-                .then(user => {
-                    if(user === null) {
-                        this.setState({
-                            errors: ["Sign-in was unsuccessfull!", "Please check your email or password."],
-                        });
-                    } else {
-                        this.props.history.push(from);
-                    }
-                })
-                .catch(err => {
-                    console.log(err);
-                    this.props.history.push('/error');
-                });
-        }
-    }
-
-    change = (event) => {
-        const {target: { name, value }} = event;
-    
-        this.setState(() => {
-          return {
-            [name]: value
-          };
-        });
-    }
-
     render() {
         const {
             emailAddress,
@@ -100,5 +53,53 @@ export default class UserSignIn extends Component {
                 </div>
             </div>
         );
+    }
+
+    cancel = (event) => {
+        event.preventDefault(); 
+        this.props.history.push('/');
+    }
+
+    submit = (event) => {
+        event.preventDefault();
+        const { context } = this.props;
+        const { from } = this.props.location.state || { from: { pathname: '/' } };
+        const { emailAddress, password } = this.state;
+
+        // client side validation check
+        if(!emailAddress) {
+            this.setState({
+                errors: ['Please provide "email address".'],
+            });
+        } else if(!password) {
+            this.setState({
+                errors: ['Please provide "password".'],
+            });
+        } else {
+            context.actions.signIn(emailAddress, password)
+                .then(user => {
+                    if(user === null) {
+                        this.setState({
+                            errors: ["Sign-in was unsuccessfull!", "Please check your email or password."],
+                        });
+                    } else {
+                        this.props.history.push(from);
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                    this.props.history.push('/error');
+                });
+        }
+    }
+
+    change = (event) => {
+        const {target: { name, value }} = event;
+    
+        this.setState(() => {
+          return {
+            [name]: value
+          };
+        });
     }
 }

@@ -9,68 +9,25 @@ export default class CourseDetail extends Component {
         errors: [],
     }
 
-    // Call getCourses method to fetch a list of courses
+    // Call getCourseDetail method to fetch detail of courses
     // when the component is mounted.
     componentDidMount() {
         this.getCourseDetail();
     }
-
-    getCourseDetail = async (id = this.props.match.params.id) => {
-        const url = 'http://localhost:5000/api/courses/';
-        const response = await this.props.context.data.api(url + id);
-
-        if(response.status === 200) {
-            response.json().then(data => this.setState({course: data}));
-        } else if (response.status === 500) {
-            this.props.history.push(`/error`);
-        } else {
-            throw new Error();
-        }
-    }
-
-    deleteCourse = async (id = this.props.match.params.id) => {
-        const url = `http://localhost:5000/api/courses/${id}`;
-
-        const { context } = this.props;
-        const { emailAddress } = context.authenticatedUser;
-        const password = context.userPassword;
-        const response = await context.data.api(url, 'DELETE', null, true, {emailAddress, password});
-
-        if (response.status === 204) {
-          return '/';
-        } else if (response.status === 403) {
-          return '/forbidden'
-        } else if (response.status === 400) {
-            return response.json().then(data => data);
-        } else if (response.status >= 500) {
-          this.props.history.push(`/error`);
-        } else {
-            throw new Error();
-        }
-      }
 
     render() {
         const { course, errors } = this.state;
         const { authenticatedUser } = this.props.context;
         let authButton = '';
 
+        // If fetching course detail and a user signed in
         if(course && authenticatedUser) {
+            // and the owner of the course and signed user are matched
             if(course.User.id === authenticatedUser.id) {
+                // show Update and Delete button
                 authButton = <React.Fragment>
                                 <Link className="button" to={course ? `/courses/${course.id}/update/` : ''}>Update Course</Link>
-                                <button className="button" onClick={()=>{
-                                    this.deleteCourse()
-                                        .then(data => {
-                                            if(data.errors) {
-                                                this.setState({
-                                                    errors: data.errors,
-                                                });
-                                            } else {
-                                                //if server returns 200 status, data returns '/'
-                                                this.props.history.push(data);
-                                            }
-                                        });
-                                }}>Delete Course</button>
+                                <button className="button" onClick={()=>{this.deleteCourse(course.id)}}>Delete Course</button>
                             </React.Fragment>
             }
         }
@@ -117,5 +74,54 @@ export default class CourseDetail extends Component {
                 </div>
             </div>
         );
+    }
+
+    
+    /**
+     * Fetch course detail
+     * @param {string} id - URL parameter
+     * @memberof CourseDetail
+     */
+    getCourseDetail = async (id = this.props.match.params.id) => {
+        const url = 'http://localhost:5000/api/courses/';
+        const response = await this.props.context.data.api(url + id);
+
+        if(response.status === 200) {
+            response.json().then(data => this.setState({course: data}));
+        } else if (response.status === 500) {
+            this.props.history.push(`/error`);
+        } else {
+            throw new Error();
+        }
+    }
+
+    /**
+     * Delete course 
+     * @param {string} id - URL parameter 
+     * @memberof CourseDetail
+     */
+    deleteCourse = async (id = this.props.match.params.id) => {
+        const url = `http://localhost:5000/api/courses/${id}`;
+
+        const { context } = this.props;
+        const { emailAddress } = context.authenticatedUser;
+        const password = context.userPassword;
+        const response = await context.data.api(url, 'DELETE', null, true, {emailAddress, password});
+
+        if (response.status === 204) {
+            this.props.history.push(`/`);
+        } else if (response.status === 403) {
+            this.props.history.push(`/forbidden`);
+        } else if (response.status === 400) {
+            response.json().then(data => {
+                this.setState({
+                    errors: data.errors,
+                })
+            });
+        } else if (response.status === 500) {
+            this.props.history.push(`/error`);
+        } else {
+            throw new Error();
+        }
     }
 }

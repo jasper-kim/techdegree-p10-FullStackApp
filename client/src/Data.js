@@ -26,9 +26,9 @@ export default class Data {
 
         if(response.status === 200) {
             return response.json().then(data => data);
-        } else if(response.status >= 400) {
+        } else if(response.status === 400) {
             return null;
-        } else if (response.status >= 500) {
+        } else if (response.status === 500) {
             this.props.history.push(`/error`);
         } else {
             throw new Error();
@@ -42,7 +42,7 @@ export default class Data {
             return [];
         } else if (response.status ===400) {
             return response.json().then(data => data.errors);
-        } else if (response.status >= 500) {
+        } else if (response.status === 500) {
             this.props.history.push(`/error`);
         } else {
             throw new Error();

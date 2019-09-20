@@ -2,13 +2,10 @@ import React, {Component} from 'react';
 import ErrorDisplay from './ErrorDisplay';
 
 export default class CreateCourse extends Component {
-
-    //Get user info with props from authenticatedUser
-
     state = {
         title: '',
         description: '',
-        errors: [], // if errors come from server, it will set to this state
+        errors: [], // if error comes from server, it will set to this state
     }
 
     render () {
@@ -120,39 +117,9 @@ export default class CreateCourse extends Component {
             userId,
         };
         
-        this.createCourse(body)
-            .then(data => {
-                if(data.errors) {
-                    this.setState({
-                        errors: data.errors,
-                    });
-                } else {
-                    //if creating a course is successfull, data returns the id of the new course
-                    this.props.history.push(`/courses/${data}`);
-                }
-            });
+        this.createCourse(body);
 
     }
-
-    createCourse = async (body) => {
-        const url = 'http://localhost:5000/api/courses';
-        const { context } = this.props;
-        const { emailAddress } = context.authenticatedUser;
-        const password = context.userPassword;
-        const response = await context.data.api(url, 'POST', body, true, {emailAddress, password});
-
-        if (response.status === 201) {
-          const location = response.headers.get('Location');
-          const id = location.replace('/api/courses/', '');
-          return id;
-        } else if (response.status === 400) {
-            return response.json().then(data => data);
-        } else if (response.status === 500) {
-          this.props.history.push(`/error`);
-        } else {
-            throw new Error();
-        }
-      }
 
     change = (event) => {
         const {target: { name, value }} = event;
@@ -163,4 +130,33 @@ export default class CreateCourse extends Component {
           };
         });
     }
+
+    /**
+     *
+     * @param {object} body - an objech contains information to create a course
+     * @memberof CreateCourse
+     */
+    createCourse = async (body) => {
+        const url = 'http://localhost:5000/api/courses';
+        const { context } = this.props;
+        const { emailAddress } = context.authenticatedUser;
+        const password = context.userPassword;
+        const response = await context.data.api(url, 'POST', body, true, {emailAddress, password});
+
+        if (response.status === 201) {
+            const location = response.headers.get('Location');
+            const id = location.replace('/api/courses/', '');
+            this.props.history.push(`/courses/${id}`);
+        } else if (response.status === 400) {
+            response.json().then(data => {
+                this.setState({
+                    errors: data.errors,
+                })
+            });
+        } else if (response.status === 500) {
+            this.props.history.push(`/error`);
+        } else {
+            throw new Error();
+        }
+      }
 }

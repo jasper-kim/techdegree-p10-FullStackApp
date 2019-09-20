@@ -19,9 +19,11 @@ import NotFound from './Components/NotFound';
 import Forbidden from './Components/Forbidden';
 import UnhandledError from './Components/UnhandledError';
 
+//Import Higher-Order Component
 import withContext from './Context';
 import PrivateRoute from './PrivateRoute';
 
+//Subscribe to Context API
 const UserSignUpWithContext = withContext(UserSignUp);
 const UserSignInWithContext = withContext(UserSignIn);
 const UserSignOutWithContext = withContext(UserSignOut);
@@ -37,6 +39,7 @@ function App() {
       <div className="App">
         <HeaderWithContext />
         
+        {/* Set up Routes */}
         <Switch>
           <Route exact path='/' component={CoursesWithContext} />
           <PrivateRoute path='/courses/create' component={CreateCourseWithContext} />

@@ -13,72 +13,6 @@ export default class UserSignUp extends Component {
         errors: [],
     }
 
-    cancel = (event) => {
-        event.preventDefault(); 
-        this.props.history.push('/');
-    }
-
-    submit = (event) => {
-        event.preventDefault();
-
-        const { context } = this.props;
-
-        const {
-            firstName,
-            lastName,
-            emailAddress,
-            password,
-            confirmPassword,
-        } = this.state;
-
-        const user = {
-            firstName,
-            lastName,
-            emailAddress,
-            password,
-        }
-
-        if(password === confirmPassword) {
-            context.data.createUser(user)
-                .then(errors => {
-                    if(errors.length) {
-                        this.setState({errors});
-                    } else {
-                        context.actions.signIn(emailAddress, password)
-                            .then(user => {
-                                if(user === null) {
-                                    this.setState({
-                                        errors: ["Sign-in was unsuccessfull!"],
-                                    });
-                                } else {
-                                    this.props.history.push('/');
-                                }
-                            })
-                            .catch(err => {
-                                console.log(err);
-                                this.props.history.push('/error');
-                            });;
-                    }
-                })
-                .catch(error => {
-                    console.log(error)
-                    this.props.history.push('/error');
-            });
-        } else {
-            this.setState({errors: ['Your password and confirmation password DO NOT match.']});
-        }
-    }
-
-    change = (event) => {
-        const {target: { name, value }} = event;
-    
-        this.setState(() => {
-          return {
-            [name]: value
-          };
-        });
-    }
-
     render () {
         const {
             firstName,
@@ -88,6 +22,7 @@ export default class UserSignUp extends Component {
             confirmPassword,
             errors,
         } = this.state;
+
         return (
             <div className="bounds">
                 <div className="grid-33 centered signin">
@@ -155,6 +90,72 @@ export default class UserSignUp extends Component {
                 </div>
             </div>
         );
-        
+    }
+
+    cancel = (event) => {
+        event.preventDefault(); 
+        this.props.history.push('/');
+    }
+
+    submit = (event) => {
+        event.preventDefault();
+
+        const { context } = this.props;
+
+        const {
+            firstName,
+            lastName,
+            emailAddress,
+            password,
+            confirmPassword,
+        } = this.state;
+
+        const user = {
+            firstName,
+            lastName,
+            emailAddress,
+            password,
         }
+
+        //Check if a user enter same password twice
+        if(password === confirmPassword) {
+            context.data.createUser(user)
+                .then(errors => {
+                    if(errors.length) {
+                        this.setState({errors});
+                    } else {
+                        context.actions.signIn(emailAddress, password)
+                            .then(user => {
+                                if(user === null) {
+                                    this.setState({
+                                        errors: ["Sign-in was unsuccessfull!"],
+                                    });
+                                } else {
+                                    this.props.history.push('/');
+                                }
+                            })
+                            .catch(err => {
+                                console.log(err);
+                                this.props.history.push('/error');
+                            });;
+                    }
+                })
+                .catch(error => {
+                    console.log(error)
+                    this.props.history.push('/error');
+            });
+        } else {
+            this.setState({errors: ['Your password and confirmation password DO NOT match.']});
+        }
+    }
+
+    change = (event) => {
+        const {target: { name, value }} = event;
+    
+        this.setState(() => {
+          return {
+            [name]: value
+          };
+        });
+    }
 }

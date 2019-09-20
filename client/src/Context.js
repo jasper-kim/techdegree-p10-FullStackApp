@@ -10,6 +10,8 @@ export class Provider extends Component {
       this.data = new Data();
   }
   
+  //Set globla states to create Authorization header 
+  //on future REST API request that require authentication
   state = {
     authenticatedUser: Cookies.getJSON('authenticatedUser') || null,
     userPassword: Cookies.getJSON('userPassword') || null,
@@ -54,6 +56,7 @@ export class Provider extends Component {
         authenticatedUser: null,
       });
 
+      // Remove cookie
       Cookies.remove('authenticatedUser');
       Cookies.remove('userPassword');
   }
