@@ -207,7 +207,7 @@ body {
 
 /* line 13, ../sass/global.sass */
 .header {
-  background: #57496e;
+  background: #A51B30;
   padding: 20px 0;
   margin-bottom: 30px;
 }
@@ -282,7 +282,7 @@ h1 {
 
 /* line 61, ../sass/global.sass */
 a {
-  color: #7c689b;
+  color: #cc243d;
   cursor: pointer;
   text-decoration: none;
   -webkit-transition: color 0.2s;
@@ -339,7 +339,7 @@ p {
 
 /* line 102, ../sass/global.sass */
 .course--module {
-  background: #7c689b;
+  background: #cc243d;
   border-radius: 8px;
   padding: 30px;
   margin-bottom: 30px;
@@ -439,7 +439,7 @@ p {
 /* line 171, ../sass/global.sass */
 .course--header p {
   font-size: 18px;
-  color: #b1a5c4;
+  color: #c1a4af;
   font-weight: 100;
 }
 /* line 176, ../sass/global.sass */
@@ -623,7 +623,7 @@ textarea:-ms-input-placeholder {
 }
 /* line 485, ../sass/global.sass */
 textarea:focus {
-  border-color: #7c689b;
+  border-color: #cc243d;
 }
 
 /* line 488, ../sass/global.sass */
@@ -656,7 +656,7 @@ input:-ms-input-placeholder {
 }
 /* line 500, ../sass/global.sass */
 input:focus {
-  border-color: #7c689b;
+  border-color: #cc243d;
 }
 
 /* line 29, ../sass/mixins.sass */
@@ -678,7 +678,7 @@ input:focus {
 
 /* line 507, ../sass/global.sass */
 .button {
-  background: #7c689b;
+  background: #cc243d;
   color: #fff;
   font-family: "Work Sans", sans-serif;
   font-size: 18px;
@@ -701,14 +701,14 @@ input:focus {
 }
 /* line 522, ../sass/global.sass */
 .button:not(.button-secondary):hover {
-  background: #63537d;
+  background: #7c5363;
 }
 
 /* line 525, ../sass/global.sass */
 .button-secondary {
-  color: #7c689b;
+  color: #99687a;
   background: none;
-  box-shadow: 0 0 0 2px #7c689b inset;
+  box-shadow: 0 0 0 2px #99687a inset;
   -webkit-transition: box-shadow 0.2s, color 0.2s;
   -moz-transition: box-shadow 0.2s, color 0.2s;
   -ms-transition: box-shadow 0.2s, color 0.2s;
@@ -717,8 +717,8 @@ input:focus {
 }
 /* line 530, ../sass/global.sass */
 .button-secondary:hover {
-  color: #63537d;
-  box-shadow: 0 0 0 2px #63537d inset;
+  color: #7c5363;
+  box-shadow: 0 0 0 2px #7c5363 inset;
 }
 
 /* adds additional padding to the bottom of an element */
@@ -739,11 +739,11 @@ input:focus {
 
 /* styles the validation errors */
 .validation--errors--label {
-  color: #7c689b;
+  color: #cc243d;
   font-size: 28px;
 }
 .validation-errors ul {
-  color: #7c689b;
+  color: #cc243d;
   padding: 15px 0 40px 10px;
 }
 
@@ -756,4 +756,37 @@ input:focus {
   font-size: 48px;
   margin-bottom: 15px;
   color: #332a40;
+}
+
+.shadow
+{
+    position:relative;
+    -webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+       -moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+            box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+}
+.shadow:before, .shadow:after
+{
+    content:"";
+    position:absolute;
+    z-index:-1;
+    -webkit-box-shadow:0 0 20px rgba(0,0,0,0.8);
+    -moz-box-shadow:0 0 20px rgba(0,0,0,0.8);
+    box-shadow:0 0 20px rgba(0,0,0,0.8);
+    top:10px;
+    bottom:10px;
+    left:0;
+    right:0;
+    -moz-border-radius:100px / 10px;
+    border-radius:100px / 10px;
+}
+.shadow:after
+{
+    right:10px;
+    left:auto;
+    -webkit-transform:skew(8deg) rotate(3deg);
+       -moz-transform:skew(8deg) rotate(3deg);
+        -ms-transform:skew(8deg) rotate(3deg);
+         -o-transform:skew(8deg) rotate(3deg);
+            transform:skew(8deg) rotate(3deg);
 }
