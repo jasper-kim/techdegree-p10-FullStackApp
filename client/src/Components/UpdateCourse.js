@@ -76,7 +76,7 @@ export default class UpdateCourse extends Component {
 
         const { context } = this.props;
         const { emailAddress } = context.authenticatedUser;
-        const password = context.actions.getPassword();
+        const password = context.userPassword;
         const response = await context.data.api(url, 'PUT', body, true, {emailAddress, password});
 
         if (response.status === 204) {
@@ -85,7 +85,7 @@ export default class UpdateCourse extends Component {
             return '/forbidden'
         }   else if (response.status === 400) {
             return response.json().then(data => data);
-        } else if (response.status >= 500) {
+        } else if (response.status === 500) {
             return `/error`;
         }
         else {

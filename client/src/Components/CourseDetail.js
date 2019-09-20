@@ -33,7 +33,7 @@ export default class CourseDetail extends Component {
 
         const { context } = this.props;
         const { emailAddress } = context.authenticatedUser;
-        const password = context.actions.getPassword();
+        const password = context.userPassword;
         const response = await context.data.api(url, 'DELETE', null, true, {emailAddress, password});
 
         if (response.status === 204) {

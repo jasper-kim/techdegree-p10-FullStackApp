@@ -18,6 +18,8 @@ export default class CreateCourse extends Component {
             errors,
         } = this.state;
 
+        const { authenticatedUser } = this.props.context;
+
         return (
             <div className="bounds course--detail">
                 <h1>Create Course</h1>
@@ -37,8 +39,7 @@ export default class CreateCourse extends Component {
                                         value={title}
                                         onChange={this.change} />
                                 </div>
-                                {/* Update with authenticatedUser */}
-                                <p>By Joe Smith</p>
+                                <p>By { authenticatedUser ? (`${authenticatedUser.firstName} ${authenticatedUser.lastName}`) : ''}</p>
                             </div>
                             <div className="course--description">
                                 <div>
@@ -137,7 +138,7 @@ export default class CreateCourse extends Component {
         const url = 'http://localhost:5000/api/courses';
         const { context } = this.props;
         const { emailAddress } = context.authenticatedUser;
-        const password = context.actions.getPassword();
+        const password = context.userPassword;
         const response = await context.data.api(url, 'POST', body, true, {emailAddress, password});
 
         if (response.status === 201) {

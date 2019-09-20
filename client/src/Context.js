@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Cookies from 'js-cookie';
 import Data from './Data';
 
 const Context = React.createContext(); 
@@ -7,22 +8,22 @@ export class Provider extends Component {
   constructor() {
       super();
       this.data = new Data();
-      this.password = '';
   }
   
   state = {
-    authenticatedUser: null,
+    authenticatedUser: Cookies.getJSON('authenticatedUser') || null,
+    userPassword: Cookies.getJSON('userPassword') || null,
   };
 
   render() {
-    const { authenticatedUser } = this.state;
+    const { authenticatedUser, userPassword } = this.state;
     const value = {
       authenticatedUser,
+      userPassword,
       data: this.data,
       actions: {
         signIn: this.signIn,
         signOut: this.signOut,
-        getPassword: this.getPassword,
       }
     }
 
@@ -38,9 +39,12 @@ export class Provider extends Component {
     if (user !== null) {
       this.setState({
         authenticatedUser: user,
+        userPassword: password,
       });
 
-      this.password = password;
+      // Set cookie
+      Cookies.set('authenticatedUser', JSON.stringify(user), { expires: 1 });
+      Cookies.set('userPassword', JSON.stringify(password), { expires: 1 });
     }
     return user;
   }
@@ -50,7 +54,8 @@ export class Provider extends Component {
         authenticatedUser: null,
       });
 
-      this.password = '';
+      Cookies.remove('authenticatedUser');
+      Cookies.remove('userPassword');
   }
 
   getPassword = () => {
