@@ -63,7 +63,7 @@ export default class UserSignIn extends Component {
     submit = (event) => {
         event.preventDefault();
         const { context } = this.props;
-        const { from } = this.props.location.state || { from: { pathname: '/' } };
+        const { from } = this.props.location.state || '';
         const { emailAddress, password } = this.state;
 
         // client side validation check
@@ -83,7 +83,7 @@ export default class UserSignIn extends Component {
                             errors: ["Sign-in was unsuccessfull!", "Please check your email or password."],
                         });
                     } else {
-                        this.props.history.push(from);
+                        from ? this.props.history.push(from) : this.props.history.goBack()
                     }
                 })
                 .catch(err => {

@@ -48,6 +48,7 @@ export default class CourseDetail extends Component {
                 <div className="bounds course--detail">
                     <div className="grid-66">
                         <ErrorDisplay errors={errors}/>
+                        {course ? '' : <h1>Loading.....</h1>}
                         <div className="course--header">
                             <h4 className="course--label">Course</h4>
                             <h3 className="course--title">{course ? course.title : ''}</h3>
@@ -88,6 +89,8 @@ export default class CourseDetail extends Component {
 
         if(response.status === 200) {
             response.json().then(data => this.setState({course: data}));
+        } else if (response.status === 400) {
+            this.props.history.push(`/notfound`);
         } else if (response.status === 500) {
             this.props.history.push(`/error`);
         } else {

@@ -115,7 +115,13 @@ router.get('/:id', (req, res) => {
                     ]
                 }
             );
-            res.json(course).status(200).end();
+
+            if(course !== null) {
+                res.json(course).status(200).end();
+            } else {
+                res.status(400).end();
+            }
+            
         } catch(err) {
             console.error('Cannot get a course for the provided course ID: ', err);
         }

@@ -41,7 +41,7 @@ export default class Courses extends Component {
     getCourses = async () => {
         const url = 'http://localhost:5000/api/courses/';
         const response = await this.props.context.data.api(url);
-
+        
         if(response.status === 200) {
             response.json().then(data => this.setState({courses: data}));
         } else if (response.status === 500) {
