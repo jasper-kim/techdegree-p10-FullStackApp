@@ -3,7 +3,11 @@ import ErrorDisplay from './ErrorDisplay';
 
 export default class UpdateCourse extends Component {
     state = {
-        course: null,
+        title: '',
+        description: '',
+        estimatedTime: '',
+        materialsNeeded: '',
+        User: {},
         errors: [],
     }
 
@@ -15,7 +19,11 @@ export default class UpdateCourse extends Component {
 
     render () {
         const {
-            course,
+            title,
+            description,
+            estimatedTime,
+            materialsNeeded,
+            User,
             errors
         } = this.state;
 
@@ -35,15 +43,15 @@ export default class UpdateCourse extends Component {
                                     type="text" 
                                     className="input-title course--title--input" 
                                     placeholder="Course title..." 
-                                    value={course ? course.title : ''}
+                                    value={title}
                                     onChange={this.change} />
 
                             </div>
-                            <p>By {course ? (`${course.User.firstName} ${course.User.lastName}`) : ''}</p>
+                            <p>By {User ? (`${User.firstName} ${User.lastName}`) : ''}</p>
                         </div>
                         <div className="course--description">
                             <div>
-                                <textarea id="description" name="description" className="" placeholder="Course description..." value={course ? course.description : ''} onChange={this.change}>High-end furniture projects are great to dream about. But unless you have a well-equipped shop and some serious woodworking experience to draw on, it can be difficult to turn the dream into a reality.</textarea>
+                                <textarea id="description" name="description" className="" placeholder="Course description..." value={description} onChange={this.change}>High-end furniture projects are great to dream about. But unless you have a well-equipped shop and some serious woodworking experience to draw on, it can be difficult to turn the dream into a reality.</textarea>
                             </div>
                         </div>
                     </div>
@@ -59,14 +67,14 @@ export default class UpdateCourse extends Component {
                                             type="text" 
                                             className="course--time--input"
                                             placeholder="Hours" 
-                                            value={course ? course.estimatedTime : ''}
+                                            value={estimatedTime ? estimatedTime : ''}
                                             onChange={this.change} />
                                     </div>
                                 </li>
                                 <li className="course--stats--list--item">
                                     <h4>Materials Needed</h4>
                                     <div>
-                                        <textarea id="materialsNeeded" name="materialsNeeded" className="" placeholder="List materials..." value={course ? course.materialsNeeded : ''} onChange={this.change}></textarea>
+                                        <textarea id="materialsNeeded" name="materialsNeeded" className="" placeholder="List materials..." value={materialsNeeded ? materialsNeeded : ''} onChange={this.change}></textarea>
                                     </div>
                                 </li>
                             </ul>
@@ -120,7 +128,7 @@ export default class UpdateCourse extends Component {
 
     cancel = (event) => {
         event.preventDefault(); 
-        this.props.history.goBack();
+        this.props.history.push(`/courses/${this.state.id}`);
     }
 
     /**
@@ -153,7 +161,7 @@ export default class UpdateCourse extends Component {
         else {
             throw new Error();
         }
-      }
+    }
 
 
     /**
@@ -169,7 +177,7 @@ export default class UpdateCourse extends Component {
         if(response.status === 200) {
             response.json().then(course => {
                 if(context.authenticatedUser.id === course.userId) {
-                    this.setState({course}); 
+                    this.setState({...course}); 
                 } else {
                     this.props.history.push('/forbidden');
                 }
